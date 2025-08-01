@@ -1,5 +1,21 @@
-async function addRepo(params) {
-    console.log("Add function called");
+const fs = require("fs").promises;
+const path = require("path");
+
+async function addRepo(filePath) {
+    const repoPath = path.resolve(process.cwd(), ".MergeBase");
+    const stagingPath = path.join(repoPath, "staging");
+
+    try {
+        await fs.mkdir(stagingPath, { recursive: true });
+
+        const fileName = path.basename(filePath);
+        const destinationPath = path.join(stagingPath, fileName);
+
+        await fs.copyFile(filePath, destinationPath);
+        console.log(`File ${fileName} added to the staging area!`);
+    } catch (err) {
+        console.error("Error adding file:", err);
+    }
 }
 
-module.exports = {addRepo};
+module.exports = { addRepo };
