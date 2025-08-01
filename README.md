@@ -150,62 +150,465 @@ AWS_S3_BUCKET=your_s3_bucket_name
 
 ---
 
+---
+
+## 🎨 Frontend Components
+
+### Authentication System
+```
+📁 src/components/auth/
+├── 🔐 LoginForm.jsx           # User login interface
+├── 📝 RegisterForm.jsx        # User registration
+├── 🔄 ForgotPassword.jsx      # Password recovery
+├── 🛡️ ProtectedRoute.jsx      # Route protection
+└── 👤 UserProfile.jsx         # Profile management
+```
+
+### Dashboard Components
+```
+📁 src/components/dashboard/
+├── 📊 MainDashboard.jsx       # Primary dashboard view
+├── 📈 ActivityFeed.jsx        # Recent activities
+├── 📋 ProjectOverview.jsx     # Project statistics
+├── 👥 TeamMembers.jsx         # Team collaboration
+└── 🔔 NotificationCenter.jsx  # Alerts & notifications
+```
+
+### Repository Management
+```
+📁 src/components/repository/
+├── 🏗️ CreateRepository.jsx    # New repository creation
+├── 🔍 SearchRepository.jsx    # Repository search
+├── 📚 RepositoryList.jsx      # Repository listing
+├── 📖 RepositoryDetails.jsx   # Detailed repo view
+├── 🌿 BranchManager.jsx       # Branch operations
+├── 📝 CommitHistory.jsx       # Commit timeline
+├── 🔀 MergeInterface.jsx      # Merge operations
+└── ⚙️ RepositorySettings.jsx  # Repository configuration
+```
+
+### Issues Management
+```
+📁 src/components/issues/
+├── 🐛 CreateIssue.jsx         # New issue creation
+├── 📋 IssuesList.jsx          # Issues listing
+├── 📖 IssueDetails.jsx        # Issue detailed view
+├── 🏷️ IssueLabels.jsx         # Label management
+├── 👤 AssigneeSelector.jsx    # User assignment
+├── 💬 CommentSection.jsx      # Issue discussions
+└── 📊 IssueFilters.jsx        # Filtering & sorting
+```
+
+---
+
+## 🗄️ Database Schemas
+
+### User Schema
+```javascript
+const UserSchema = {
+  _id: ObjectId,
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    minlength: 3,
+    maxlength: 30
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 6
+  },
+  profile: {
+    firstName: String,
+    lastName: String,
+    avatar: String,
+    bio: String,
+    location: String,
+    website: String
+  },
+  preferences: {
+    theme: { type: String, default: 'light' },
+    emailNotifications: { type: Boolean, default: true },
+    language: { type: String, default: 'en' }
+  },
+  repositories: [{ type: ObjectId, ref: 'Repository' }],
+  collaborations: [{
+    repository: { type: ObjectId, ref: 'Repository' },
+    role: { type: String, enum: ['admin', 'write', 'read'] },
+    joinedAt: { type: Date, default: Date.now }
+  }],
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+  lastLoginAt: Date,
+  isActive: { type: Boolean, default: true },
+  emailVerified: { type: Boolean, default: false },
+  resetPasswordToken: String,
+  resetPasswordExpires: Date
+}
+```
+
+### Repository Schema
+```javascript
+const RepositorySchema = {
+  _id: ObjectId,
+  name: {
+    type: String,
+    required: true,
+    minlength: 1,
+    maxlength: 100
+  },
+  description: {
+    type: String,
+    maxlength: 500
+  },
+  owner: {
+    type: ObjectId,
+    ref: 'User',
+    required: true
+  },
+  visibility: {
+    type: String,
+    enum: ['public', 'private'],
+    default: 'public'
+  },
+  collaborators: [{
+    user: { type: ObjectId, ref: 'User' },
+    role: { type: String, enum: ['admin', 'write', 'read'] },
+    addedAt: { type: Date, default: Date.now }
+  }],
+  branches: [{
+    name: { type: String, required: true },
+    isDefault: { type: Boolean, default: false },
+    lastCommit: {
+      hash: String,
+      message: String,
+      author: { type: ObjectId, ref: 'User' },
+      timestamp: Date
+    },
+    protected: { type: Boolean, default: false }
+  }],
+  commits: [{
+    hash: { type: String, required: true, unique: true },
+    message: { type: String, required: true },
+    author: { type: ObjectId, ref: 'User' },
+    timestamp: { type: Date, default: Date.now },
+    branch: String,
+    parentCommits: [String],
+    filesChanged: [{
+      path: String,
+      action: { type: String, enum: ['added', 'modified', 'deleted'] },
+      linesAdded: Number,
+      linesDeleted: Number
+    }]
+  }],
+  tags: [{
+    name: String,
+    commit: String,
+    message: String,
+    createdAt: { type: Date, default: Date.now }
+  }],
+  settings: {
+    defaultBranch: { type: String, default: 'main' },
+    allowMergeCommits: { type: Boolean, default: true },
+    allowSquashMerge: { type: Boolean, default: true },
+    allowRebaseMerge: { type: Boolean, default: true },
+    deleteBranchOnMerge: { type: Boolean, default: false }
+  },
+  statistics: {
+    totalCommits: { type: Number, default: 0 },
+    totalBranches: { type: Number, default: 1 },
+    totalTags: { type: Number, default: 0 },
+    totalIssues: { type: Number, default: 0 },
+    lastActivity: Date
+  },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+  isArchived: { type: Boolean, default: false },
+  language: String,
+  topics: [String],
+  homepage: String,
+  size: { type: Number, default: 0 } // in bytes
+}
+```
+
+### Issue Schema
+```javascript
+const IssueSchema = {
+  _id: ObjectId,
+  number: {
+    type: Number,
+    required: true
+  },
+  title: {
+    type: String,
+    required: true,
+    minlength: 1,
+    maxlength: 200
+  },
+  body: {
+    type: String,
+    maxlength: 10000
+  },
+  repository: {
+    type: ObjectId,
+    ref: 'Repository',
+    required: true
+  },
+  author: {
+    type: ObjectId,
+    ref: 'User',
+    required: true
+  },
+  assignees: [{
+    user: { type: ObjectId, ref: 'User' },
+    assignedAt: { type: Date, default: Date.now }
+  }],
+  labels: [{
+    name: String,
+    color: String,
+    description: String
+  }],
+  milestone: {
+    title: String,
+    description: String,
+    dueDate: Date,
+    state: { type: String, enum: ['open', 'closed'] }
+  },
+  state: {
+    type: String,
+    enum: ['open', 'closed'],
+    default: 'open'
+  },
+  priority: {
+    type: String,
+    enum: ['low', 'medium', 'high', 'critical'],
+    default: 'medium'
+  },
+  comments: [{
+    _id: ObjectId,
+    author: { type: ObjectId, ref: 'User' },
+    body: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
+    reactions: [{
+      emoji: String,
+      users: [{ type: ObjectId, ref: 'User' }]
+    }]
+  }],
+  events: [{
+    type: { 
+      type: String, 
+      enum: ['opened', 'closed', 'reopened', 'assigned', 'unassigned', 'labeled', 'unlabeled', 'commented']
+    },
+    actor: { type: ObjectId, ref: 'User' },
+    timestamp: { type: Date, default: Date.now },
+    data: Schema.Types.Mixed // Additional event-specific data
+  }],
+  linkedPullRequests: [{
+    type: ObjectId,
+    ref: 'PullRequest'
+  }],
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+  closedAt: Date,
+  closedBy: { type: ObjectId, ref: 'User' },
+  locked: { type: Boolean, default: false },
+  lockReason: String
+}
+```
+
+---
+
 ## 🎯 API Endpoints
 
-### Authentication
+### User Router (`/api/users`)
 ```http
-POST   /api/auth/register    # User registration
-POST   /api/auth/login       # User login
-GET    /api/auth/profile     # Get user profile
+# Authentication
+POST   /api/users/register           # User registration
+POST   /api/users/login              # User login
+POST   /api/users/logout             # User logout
+POST   /api/users/refresh-token      # Refresh JWT token
+POST   /api/users/forgot-password    # Request password reset
+POST   /api/users/reset-password     # Reset password with token
+
+# Profile Management
+GET    /api/users/profile            # Get current user profile
+PUT    /api/users/profile            # Update user profile
+DELETE /api/users/profile            # Delete user account
+POST   /api/users/avatar             # Upload profile avatar
+GET    /api/users/:username          # Get public user profile
+
+# Account Settings
+PUT    /api/users/password           # Change password
+PUT    /api/users/email              # Change email
+PUT    /api/users/preferences        # Update user preferences
+GET    /api/users/notifications      # Get notifications
+PUT    /api/users/notifications/:id  # Mark notification as read
+
+# User Discovery
+GET    /api/users                    # Search users (public)
+GET    /api/users/:username/repos    # Get user's public repositories
+GET    /api/users/:username/activity # Get user's activity feed
 ```
 
-### Repositories
+### Repository Router (`/api/repos`)
 ```http
-GET    /api/repos            # List repositories
-POST   /api/repos            # Create repository
-GET    /api/repos/:id        # Get repository details
-PUT    /api/repos/:id        # Update repository
-DELETE /api/repos/:id        # Delete repository
+# Repository CRUD
+GET    /api/repos                    # List user's repositories
+POST   /api/repos                    # Create new repository
+GET    /api/repos/:owner/:name       # Get repository details
+PUT    /api/repos/:owner/:name       # Update repository
+DELETE /api/repos/:owner/:name       # Delete repository
+POST   /api/repos/:owner/:name/fork  # Fork repository
+
+# Repository Content
+GET    /api/repos/:owner/:name/contents/:path    # Get file/directory contents
+PUT    /api/repos/:owner/:name/contents/:path    # Create/update file
+DELETE /api/repos/:owner/:name/contents/:path    # Delete file
+
+# Branch Management
+GET    /api/repos/:owner/:name/branches          # List branches
+POST   /api/repos/:owner/:name/branches          # Create branch
+GET    /api/repos/:owner/:name/branches/:branch  # Get branch details
+DELETE /api/repos/:owner/:name/branches/:branch  # Delete branch
+PUT    /api/repos/:owner/:name/branches/:branch/protection # Update branch protection
+
+# Commit Operations
+GET    /api/repos/:owner/:name/commits           # Get commit history
+GET    /api/repos/:owner/:name/commits/:sha      # Get specific commit
+POST   /api/repos/:owner/:name/commits           # Create commit
+POST   /api/repos/:owner/:name/merges            # Create merge
+
+# Collaboration
+GET    /api/repos/:owner/:name/collaborators     # List collaborators
+PUT    /api/repos/:owner/:name/collaborators/:username  # Add collaborator
+DELETE /api/repos/:owner/:name/collaborators/:username # Remove collaborator
+GET    /api/repos/:owner/:name/invitations       # List pending invitations
+
+# Repository Analytics
+GET    /api/repos/:owner/:name/stats             # Repository statistics
+GET    /api/repos/:owner/:name/activity          # Activity feed
+GET    /api/repos/:owner/:name/traffic           # Traffic analytics
+GET    /api/repos/:owner/:name/languages         # Language breakdown
 ```
 
-### Version Control
+### Issue Router (`/api/repos/:owner/:name/issues`)
 ```http
-GET    /api/repos/:id/commits     # Get commit history
-POST   /api/repos/:id/commits     # Create commit
-GET    /api/repos/:id/branches    # List branches
-POST   /api/repos/:id/merge       # Merge branches
+# Issue CRUD
+GET    /api/repos/:owner/:name/issues            # List repository issues
+POST   /api/repos/:owner/:name/issues            # Create new issue
+GET    /api/repos/:owner/:name/issues/:number    # Get specific issue
+PUT    /api/repos/:owner/:name/issues/:number    # Update issue
+DELETE /api/repos/:owner/:name/issues/:number    # Delete issue (admin only)
+
+# Issue State Management
+PUT    /api/repos/:owner/:name/issues/:number/state       # Open/Close issue
+PUT    /api/repos/:owner/:name/issues/:number/lock        # Lock/Unlock issue
+
+# Issue Assignment
+GET    /api/repos/:owner/:name/issues/:number/assignees   # Get assignees
+POST   /api/repos/:owner/:name/issues/:number/assignees   # Add assignees
+DELETE /api/repos/:owner/:name/issues/:number/assignees   # Remove assignees
+
+# Labels Management
+GET    /api/repos/:owner/:name/labels                     # List repository labels
+POST   /api/repos/:owner/:name/labels                     # Create label
+PUT    /api/repos/:owner/:name/labels/:name               # Update label
+DELETE /api/repos/:owner/:name/labels/:name               # Delete label
+POST   /api/repos/:owner/:name/issues/:number/labels      # Add labels to issue
+DELETE /api/repos/:owner/:name/issues/:number/labels/:name # Remove label from issue
+
+# Comments System
+GET    /api/repos/:owner/:name/issues/:number/comments    # Get issue comments
+POST   /api/repos/:owner/:name/issues/:number/comments    # Add comment
+PUT    /api/repos/:owner/:name/issues/comments/:id        # Update comment
+DELETE /api/repos/:owner/:name/issues/comments/:id        # Delete comment
+
+# Issue Events & Timeline
+GET    /api/repos/:owner/:name/issues/:number/events      # Get issue events
+GET    /api/repos/:owner/:name/issues/:number/timeline    # Get full timeline
+
+# Milestones
+GET    /api/repos/:owner/:name/milestones                 # List milestones
+POST   /api/repos/:owner/:name/milestones                 # Create milestone
+PUT    /api/repos/:owner/:name/milestones/:number         # Update milestone
+DELETE /api/repos/:owner/:name/milestones/:number         # Delete milestone
+
+# Issue Search & Filtering
+GET    /api/repos/:owner/:name/issues/search              # Search issues
+GET    /api/repos/:owner/:name/issues/filters             # Get available filters
 ```
 
 ---
 
 ## 🖥️ CLI Usage
 
-MergeBase comes with a powerful CLI built with Yargs:
+MergeBase comes with a powerful CLI built with Yargs, replicating Git functionality:
+
+### Core Version Control Commands
 
 ```bash
 # Initialize a new repository
 mergebase init
+mergebase init --bare  # Initialize bare repository
 
-# Add files to staging
-mergebase add <filename>
+# Add files to staging area
+mergebase add file.txt
+mergebase add .        # Add all files
+mergebase add *.js     # Add all JavaScript files
 
 # Commit changes
-mergebase commit -m "Your commit message"
+mergebase commit -m "Initial commit"
+mergebase commit -m "Add new feature" --author "John Doe"
+mergebase commit --amend  # Amend last commit
 
-# Push to remote
+# Push to remote repository
+mergebase push
 mergebase push origin main
+mergebase push -u origin feature-branch  # Set upstream
 
-# Create new branch
-mergebase branch <branch-name>
+# Pull from remote repository
+mergebase pull
+mergebase pull origin main
+mergebase pull --rebase  # Pull with rebase
 
-# Merge branches
-mergebase merge <branch-name>
+# Revert changes
+mergebase revert HEAD
+mergebase revert <commit-hash>
+mergebase revert HEAD~3  # Revert last 3 commits
+```
 
-# View repository status
+### Additional Commands
+
+```bash
+# Repository status
 mergebase status
+mergebase status --short
+
+# Branch management
+mergebase branch <branch-name>
+mergebase checkout <branch-name>
+mergebase merge <branch-name>
 
 # View commit history
 mergebase log
+mergebase log --oneline
+mergebase log --graph
+
+# Remote management
+mergebase remote add origin <url>
+mergebase remote -v
+
+# Diff operations
+mergebase diff
+mergebase diff --staged
 ```
 
 ---
