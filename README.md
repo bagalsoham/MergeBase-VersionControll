@@ -4,14 +4,14 @@
 
 ![MergeBase Logo](https://via.placeholder.com/200x80/4a90e2/ffffff?text=MergeBase)
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/yourusername/mergebase)
-[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/yourusername/mergebase)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/Sohambagal/mergebase)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/Sohambagal/mergebase)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-**A powerful, modern version control system built for developers, by developers**
+**A powerful, modern version control system built by Soham Bagal**
 
-[🌟 Live Demo](https://your-demo-url.com) • [📖 Documentation](https://docs.mergebase.com) • [🐛 Report Bug](https://github.com/yourusername/mergebase/issues) • [💡 Request Feature](https://github.com/yourusername/mergebase/issues)
+[🌟 Live Demo](https://mergebase-demo.com) • [📖 Documentation](https://docs.mergebase.com) • [🐛 Report Bug](https://github.com/Sohambagal/mergebase/issues) • [💡 Request Feature](https://github.com/Sohambagal/mergebase/issues)
 
 </div>
 
@@ -81,7 +81,7 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/mergebase.git
+git clone https://github.com/Sohambagal/mergebase.git
 cd mergebase
 
 # Install backend dependencies
@@ -703,10 +703,10 @@ npm test
 
 <div align="center">
 
-![GitHub stars](https://img.shields.io/github/stars/yourusername/mergebase?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/mergebase?style=social)
-![GitHub issues](https://img.shields.io/github/issues/yourusername/mergebase)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/yourusername/mergebase)
+![GitHub stars](https://img.shields.io/github/stars/Sohambagal/mergebase?style=social)
+![GitHub forks](https://img.shields.io/github/forks/Sohambagal/mergebase?style=social)
+![GitHub issues](https://img.shields.io/github/issues/Sohambagal/mergebase)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Sohambagal/mergebase)
 
 </div>
 
@@ -718,15 +718,18 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 👥 Team
+## 👨‍💻 Developer
 
 <div align="center">
 
-| Role | Name | GitHub |
-|------|------|--------|
-| **Lead Developer** | Your Name | [@yourusername](https://github.com/yourusername) |
-| **Backend Engineer** | Team Member | [@teammember](https://github.com/teammember) |
-| **Frontend Engineer** | Team Member | [@teammember2](https://github.com/teammember2) |
+**Developed by [Soham Bagal](https://github.com/Sohambagal)**
+
+| Role | Name | Contact |
+|------|------|---------|
+| **Full Stack Developer** | Soham Bagal | [![Email](https://img.shields.io/badge/Email-bagalsoham1717%40gmail.com-red?style=flat-square&logo=gmail)](mailto:bagalsoham1717@gmail.com) |
+| **System Architect** | Soham Bagal | [![GitHub](https://img.shields.io/badge/GitHub-Sohambagal-black?style=flat-square&logo=github)](https://github.com/Sohambagal) |
+
+*Building the future of version control, one commit at a time* ⚡
 
 </div>
 
@@ -734,19 +737,21 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-Need help? We're here for you!
+Need help? Reach out to the developer!
 
-- 📧 **Email**: support@mergebase.com
-- 💬 **Discord**: [Join our community](https://discord.gg/mergebase)
-- 📖 **Documentation**: [docs.mergebase.com](https://docs.mergebase.com)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/yourusername/mergebase/issues)
+- 📧 **Email**: [bagalsoham1717@gmail.com](mailto:bagalsoham1717@gmail.com)
+- 💼 **LinkedIn**: [Connect with Soham](https://www.linkedin.com/in/soham-bagal-4343bb284/)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/Sohambagal/mergebase/issues)
+- 📖 **Documentation**: [Project Wiki](https://github.com/Sohambagal/mergebase/wiki)
 
 ---
 
 <div align="center">
 
-**Made with ❤️ by the MergeBase Team**
+**Made with ❤️ by Soham Bagal**
 
-⭐ Star us on GitHub if this project helped you!
+*Passionate Full Stack Developer crafting innovative solutions*
+
+⭐ Star this repository if MergeBase helped you!
 
 </div>
