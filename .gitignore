@@ -5,6 +5,9 @@
 **/.env
 **/.env.local
 **/.env.*.local
+# Ignore entire config folder
+backend/config/
+
 
 # Logs
 logs
@@ -16,6 +19,10 @@ yarn-error.log*
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+#commit files
+.MergeBase/
+
 
 # Optional build output
 dist/
