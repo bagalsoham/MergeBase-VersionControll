@@ -154,7 +154,7 @@ cd backend
 npm install
 ```
 
-> The only declared dependency is `yargs`. If you plan to enable S3 sync, you’ll also need the AWS SDK (see **Configuration**).
+> The only declared dependency is `yargs`. If you plan to enable S3 sync, you'll also need the AWS SDK (see **Configuration**).
 
 ---
 
@@ -196,7 +196,7 @@ If you implement remote sync, ensure your `config.json` resembles:
 
 ### AWS SDK (if enabling push/pull)
 
-The `push.js` controller references an `s3.upload(...)` pattern, but `aws-sdk` (or the v3 `@aws-sdk/*` packages) is **not** declared in `package.json`. You’ll need to add it and provide credentials via environment variables or shared config:
+The `push.js` controller references an `s3.upload(...)` pattern, but `aws-sdk` (or the v3 `@aws-sdk/*` packages) is **not** declared in `package.json`. You'll need to add it and provide credentials via environment variables or shared config:
 
 ```bash
 npm install aws-sdk        # SDK v2 (simple)
@@ -244,9 +244,10 @@ This project is licensed under the **ISC License** (as declared in `package.json
 
 ## Author / Contact
 
-- _Your Name_ — _your.email@example.com_  
-- GitHub: _your‑handle_  
-- LinkedIn: _your‑linkedin_
+- **Soham Bagal** — bagalsoham1717@gmail.com  
+- **Phone:** +91 9967550047
+- **GitHub:** [bagalsoham](https://github.com/bagalsoham)  
+- **LinkedIn:** [soham-bagal-4343bb284](https://www.linkedin.com/in/soham-bagal-4343bb284/)
 
 ---
 
