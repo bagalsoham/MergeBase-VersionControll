@@ -1,5 +1,5 @@
-const mongoose = require ("mongoose");
-const {Schema} = mongoose;
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
 
 const UserSchema = new Schema({
   username: {
@@ -18,26 +18,28 @@ const UserSchema = new Schema({
   },
   repositories: [
     {
-      default: [],
       type: Schema.Types.ObjectId,
       ref: "Repository",
     },
   ],
   followedUsers: [
     {
-      default: [],
       type: Schema.Types.ObjectId,
       ref: "User",
     },
   ],
   starredRepos: [
     {
-      default: [],
       type: Schema.Types.ObjectId,
       ref: "Repository",
     },
   ],
 });
+
+// set default empty arrays properly
+UserSchema.path("repositories").default([]);
+UserSchema.path("followedUsers").default([]);
+UserSchema.path("starredRepos").default([]);
 
 const User = mongoose.model("User", UserSchema);
 
